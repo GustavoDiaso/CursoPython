@@ -5,6 +5,6 @@ print(strConcatenada)
 
 # utiliza-se o sinal de multiplicação (*) para repetição de uma mesma string
 
-stringRepetida = 'Cu'*3
+stringRepetida = 'foca'*3
 
 print(stringRepetida)
