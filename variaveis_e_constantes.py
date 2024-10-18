@@ -31,6 +31,6 @@ def aplica_multa(infoVeiculo):
             return "Você tomou multa"
             
 
-    return "Você não tomou multa"
+    return "Você não tomou multa!"
 
 print(aplica_multa(info_carro))
