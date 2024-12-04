@@ -23,29 +23,27 @@
 # pessoa = dict(nome='Luiz Otávio', sobrenome='Miranda')
 
 pessoa = {
-    'nome': 'Luiz Otávio',
-    'sobrenome': 'Miranda',
-    'idade': 18,
-    'altura': 1.8,
-    'endereços': [
-        {'rua': 'tal tal', 'número': 123},
-        {'rua': 'outra rua', 'número': 321},
-    ]
+    "nome": "Luiz Otávio",
+    "sobrenome": "Miranda",
+    "idade": 18,
+    "altura": 1.8,
+    "endereços": [
+        {"rua": "tal tal", "número": 123},
+        {"rua": "outra rua", "número": 321},
+    ],
 }
 
-print(pessoa['idade'])
+print(pessoa["idade"])
 print()
 
 # O laço for itera sobre as chaves de um dicionário
 for chave in pessoa:
-    print(f'{chave}: {pessoa[chave]}')
+    print(f"{chave}: {pessoa[chave]}")
 
 
 # Verificando se uma chave existe dentro do dicionário
-if pessoa.get('irmão', None) == None:
-    print('Esta chave não existe')
-
-
+if pessoa.get("irmão", None) == None:
+    print("Esta chave não existe")
 
 
 # Métodos úteis dos dicionários em Python
@@ -82,8 +80,8 @@ Isso é útil quando você quer modificar a cópia sem afetar o original.
 print()
 print(len(pessoa))
 
-print(f'As chaves do dicionário pessoas são: {pessoa.keys()}')
-print(f'Os valores do dicionário são: {pessoa.values()}')
+print(f"As chaves do dicionário pessoas são: {pessoa.keys()}")
+print(f"Os valores do dicionário são: {pessoa.values()}")
 
 
 for item in pessoa.items():
@@ -91,8 +89,21 @@ for item in pessoa.items():
 
 
 print()
-pessoa.setdefault('irmão', None)
-print('O irmão da pessoa é o', pessoa['irmão'])
+pessoa.setdefault("irmão", None)
+print("O irmão da pessoa é o", pessoa["irmão"])
 
-pessoa['irmão'] = 'José'
-print('O irmão da pessoa é o', pessoa['irmão'])
+pessoa["irmão"] = "José"
+print("O irmão da pessoa é o", pessoa["irmão"])
+
+
+# podemos modificar um dicionário ou adicionar novos valores a ele utilizando o método update
+pessoa.update(nome="Gustavo Henrique de Oliveira Dias", irmão="Isabela", peso=70.0)
+
+"""outra forma:
+
+pessoa.update({
+    'nome' = "Gustavo Henrique",
+    'irmão' = "isabela", 
+    'peso' = 70.0
+})
+"""

@@ -1,42 +1,49 @@
-"""
-Set é uma coleção não-ordenada de valores ÚNICOS usada para armazenar múltiplos itens em um objeto, não havendo repetição de objetos. 
-ão escritos com chaves ({}).
+# Sets - Conjuntos de objetos imutáveis e únicos em Python (tipo set)
+# Conjuntos são ensinados na matemática
+# https://brasilescola.uol.com.br/matematica/conjunto.htm
+# Representados graficamente pelo diagrama de Venn
+# Sets em Python são mutáveis, porém aceitam apenas
+# tipos imutáveis como valor interno.
 
-Características:
-- armazena itens não duplicados 
-- suporta operações matemáticas sobre conjuntos (união, instersecção)
-- Não é possível modificar os ítens já existentes 
-- Armazena elementos de qualquer tipo, não-ordenados e não-indexados.
-"""
+# Criando um set
+# set(iterável) ou {1, 2, 3}
+# s1 = set('Luiz')
+s1 = set()  # vazio
+s1 = {"Luiz", 1, 2, 3}  # com dados
 
-planetas = {'Terra', 'Marte', 'Mercúrio'}
+# Sets são eficientes para remover valores duplicados
+# de iteráveis.
+# - Não aceitam valores mutáveis;
+# - Seus valores serão sempre únicos;
+# - não tem índexes;
+# - não garantem ordem;
+# - são iteráveis (for, in, not in)
 
-print(planetas)
+lista = [1, 2, 3, 4, 4, 4]
+lista_unica = list(set(lista))
+print(lista_unica)
 
-print(len(planetas))
-
-planetas.add('Terra')
-# Note que "Terra" não pode ser adicionado duas vezes
-print(planetas)
-
-try:
-    print(planetas[1])
-
-except:
-    print('Os elementos dentro do Set não possuem indexes')
-
-
-
-for i in planetas:
-    print(i)
+# Métodos úteis:
+# add, update, clear, discard
 
 
-# Trasnformando array em set
+# Operadores úteis:
 
-array = [1,1,1,2,2,3,3,3,4,4,5,6]
+s1 = {1, 2, 3}
+s2 = {3, 4, 5}
 
-arraySet = set(array)
+# união | união (union) - Une
+uniao = s1 | s2
+print("união", uniao)
 
-print(arraySet)
+# intersecção & (intersection) - Itens presentes em ambos
+intersecao = s1 & s2
+print("interseção", intersecao)
 
-# Como o set é uma coleção de objetos não repetidos, quando convertemos um array em um set, os elementos repetidos são eliminados
+# diferença - Itens presentes apenas no set da esquerda
+diff = s1 - s2
+print("diferença", diff)
+
+# diferença simétrica ^ - Itens que não estão em ambos
+diff_simetrica = s1 ^ s2
+print("Diferença simétrica", diff_simetrica)
