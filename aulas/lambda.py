@@ -34,3 +34,32 @@ lista = ["Gustavo", "Isabela", "Pedro"]
 
 lista.sort(key=lambda palavra: palavra[1])
 print(lista)
+
+
+"""-------------------------------------------------------------------"""
+""" Convertendo funções para lambda """
+
+def executa_funcao(funcao, *argumentos):
+    return funcao(*argumentos)
+
+
+print(executa_funcao(lambda x, y: x + y, 2,3))
+
+
+def cria_multiplicador(multiplicador):
+    def func_multiplicar(valor):
+        return valor * multiplicador
+    
+    return func_multiplicar
+
+
+multiplica_por_tres = cria_multiplicador(3)
+print(multiplica_por_tres(2))
+
+
+soma = lambda *args: sum(args)
+
+print(soma(1,2,3,4))
+
+
+
