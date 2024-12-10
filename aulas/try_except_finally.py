@@ -17,7 +17,6 @@ def main():
         # O bloco finally sempre será executado, independentemente do resultado do try except 
         print("Bom dia")
 
-
 if __name__ == '__main__':
     main()
 
