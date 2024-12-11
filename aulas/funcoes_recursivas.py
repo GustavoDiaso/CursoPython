@@ -29,18 +29,17 @@ def menor_primo_mais_proximo(numero: int):
 
     divisores = 0
 
-    for num in range(numero, 0, -1):
+    for num in range(numero-1, 1, -1):
         if numero % num == 0:
             divisores += 1
 
     
-    if divisores == 2:
-        return numero
-    else:
+    if divisores > 0:
         return(menor_primo_mais_proximo(numero-1))
+    else:
+        return numero
 
 
-print(menor_primo_mais_proximo(9))
-    
+print(menor_primo_mais_proximo(6))
         
     
