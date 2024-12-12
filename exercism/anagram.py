@@ -1,24 +1,15 @@
-from win32file import TF_REUSE_SOCKET
-
-
 def return_anagram(target: str, *candidates) -> list:
     target = target.strip().lower()
     anagrams = []
 
     def is_anagram(word1:str, word2:str) -> bool:
-        if len(word1) == len(word2):
-            answer = True
-            for letter in word1:
-                if letter not in word2:
-                    answer = False
+        word1 = sorted(word1.strip().lower())
+        word2 = sorted(word2.strip().lower())
 
-            return  answer
-
-        return  False
-
+        return  word1 == word2
 
     for word in candidates:
-        if is_anagram(target, word.lower()):
+        if is_anagram(target, word):
             anagrams.append(word)
 
 
