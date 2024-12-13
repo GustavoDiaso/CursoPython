@@ -76,7 +76,7 @@ bibliotecas e o executável do ambiente virtual, em vez do ambiente global do si
 
 Quando você ativa o ambiente virtual:
 
--> O interpretador Python usado será o que está dentro da pasta do ambiente.
+-> O interpretador Python usado será o que está dentro da pasta do ambiente virtual.
 -> Qualquer biblioteca que você instalar via pip vai para a pasta do ambiente virtual, sem afetar o sistema global.
 -> O caminho padrão para python e pip é atualizado para o diretório do ambiente virtual.
 
@@ -102,4 +102,27 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 
 """
 
-print("Olá")
+"""
+Gerando requirements.txt
+
+O arquivo requirements.txt fornece uma lista com todas as bibliotecas instaladas no ambiente atual do python
+(virtual ou global)
+
+para gerar esse arquivo, digitamos a seguinte linha de comando:
+
+pip freeze > requirements.txt
+
+Dessa forma, poderemos saber futuramente quais bibliotecas e versões dessas bibliotecas foram utilizadas em 
+nosso projeto.
+
+
+Para instalar as bibliotecas listadas em requirements.txt, nas exatas versões em que aparecem, digitamos 
+a seguinte linha de comando:
+
+pip install -r .\requirements.txt
+
+Lembre-se: Tais bibliotecas só serão instaladas dentro do ambiente virtual caso ele tenha sido ativado.
+
+
+
+"""

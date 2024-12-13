@@ -1,0 +1,11 @@
+{
+  "nome": "Ana Silva",
+  "idade": 30,
+  "cidade": "São Paulo",
+  "profissao": "Desenvolvedora",
+  "hobbies": [
+    "ler",
+    "correr",
+    "cozinhar"
+  ]
+}
