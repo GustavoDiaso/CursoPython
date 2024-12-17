@@ -1,5 +1,6 @@
 # groupby - agrupando valores (itertools)
-from itertools import groupby
+from itertools import  groupby
+
 alunos = [
     {'nome': 'Luiz', 'nota': 'A'},
     {'nome': 'Letícia', 'nota': 'B'},
