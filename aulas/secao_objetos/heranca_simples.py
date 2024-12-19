@@ -36,18 +36,27 @@ chamarmos um metodo desse objeto proxy, o objeto passado para self será nossa p
 
 """
 
+
 class Pessoa:
     """instâncias de pessoa"""
-    def __init__(self, nome:str, idade:int):
+
+    def __init__(self, nome: str, idade: int):
         self.nome = nome
         self.idade = idade
 
-    def falar(self, frase:str):
+    def falar(self, frase: str):
         print(frase)
+
 
 class Cliente(Pessoa):
     """instâncias de clientes, que também são pessoas"""
-    def __init__(self, nome: str, idade: int, endereco: str, ):
+
+    def __init__(
+        self,
+        nome: str,
+        idade: int,
+        endereco: str,
+    ):
         """
         Nesse caso, o objeto proxy retornado possuirá os métodos e propriedades de classe Pessoa.
         Além disso, passaremos nossa istância atual de cliente para a propriedade obj do objeto proxy.
@@ -59,9 +68,9 @@ class Cliente(Pessoa):
         self.endereco = endereco
 
 
-cliente1 = Cliente('Gustavo', 20, 'Rua Dr. José Ória')
+cliente1 = Cliente("Gustavo", 20, "Rua Dr. José Ória")
 
 print(cliente1.nome)
 print(cliente1.idade)
 print(cliente1.endereco)
-cliente1.falar('Tudo bom, companheiro?')
+cliente1.falar("Tudo bom, companheiro?")
