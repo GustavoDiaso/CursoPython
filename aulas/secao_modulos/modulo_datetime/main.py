@@ -1,4 +1,9 @@
 import  datetime
+import calendar
+import locale
+
+# definindo a localização como a do meu sistema operacional
+locale.setlocale(locale.LC_ALL, '')
 
 data_aniversario = datetime.datetime(2004, 6, 19)
 
@@ -28,3 +33,6 @@ new_date = data2 + delta
 
 str_new_date = new_date.strftime('%Y-%m-%d')
 print(str_new_date)
+
+print(calendar.calendar(2025))
+
