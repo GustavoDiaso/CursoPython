@@ -10,3 +10,9 @@ chars = s.ascii_letters + s.digits + s.punctuation
 random_password = ''.join([secrets.choice(chars) for _ in range(0,10)])
 
 print(random_password)
+
+# Outra forma:
+rnd = secrets.SystemRandom()
+random_password = ''.join(rnd.choices(chars, k=10))
+
+print(random_password)
