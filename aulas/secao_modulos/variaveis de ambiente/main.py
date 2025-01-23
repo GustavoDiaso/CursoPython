@@ -14,10 +14,10 @@ import os
 from dotenv import load_dotenv
 
 # Instanciando nossas variáveis de ambiente
-load_dotenv(r'C:\Users\gholiveira\Documents\GitHub\CursoPython\.env')
+load_dotenv(r"C:\\Users\\Gustavo\\Documents\\GitHub\\CursoPython\\.env", override=True)
 
 
 # Resgatando os valores das variaveis de ambiente criadas.
-# print(os.environ)
-print(os.getenv('USUARIO'))
-print(os.getenv('SENHA'))
+print(*os.environ, sep="\n")
+print(os.getenv("USUARIO"))
+print(os.getenv("SENHA"))
