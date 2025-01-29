@@ -16,20 +16,28 @@ class Ingressos:
         self.lock = Lock()
 
     def comprar(self, quantidade: int):
-        """
-        Compra determinada quantidade de ingressos
+        """tenta comprar um ingresso"""
 
-        :param quantidade: A quantidade de ingressos que deseja comprar
-        :type quantidade: int
-        :return: Nada
-        :rtype: None
         """
-        # Tranca o metodo, impedindo que ele seja chamado novamente pela mesma thread
+        Lock.acquire() -> Interrompe todas as outras execuções desse metodo na fila de chamada
+        ex:
+        
+        Considere que o método ingressos.comprar seja chamado primeiramente por thread1 e depois por thread2
+        
+        Como se tratam de threads, ambas as execuções acontecerão ao mesmo tempo, mas a execução do método comprar
+        pela thread 1 foi feito primeiro
+        
+        como ingressos.comprar possui um Lock.aquire(), quando thread1 passar por esse comando, a execução do 
+        método ingressos.comprar pela thread2 será pausada, até que o comando Lock.release() seja executado 
+        pela thread1. 
+        
+        Isso impede que um mesmo método ou função seja executado ao mesmo tempo por 1 ou mais threads.
+        """
         self.lock.acquire()
 
         if self.estoque < quantidade:
             print('Não temos ingressos suficientes.')
-            # Libera o metodo, permitindo que ele seja chamado novamente pela mesma thread.
+            # Libera as outras execuções do metodo, seguindo a ordem da fila de chamadas.
             self.lock.release()
             return
 
@@ -39,7 +47,7 @@ class Ingressos:
         print(f'Você comprou {quantidade} ingresso(s). '
               f'Ainda temos {self.estoque} em estoque.')
 
-        # Libera o metodo, permitindo que ele seja chamado novamente pela mesma thread.
+        # Libera as outras execuções do metodo, seguindo a ordem da fila de chamadas.
         self.lock.release()
 
 
