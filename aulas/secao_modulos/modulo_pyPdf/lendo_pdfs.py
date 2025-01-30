@@ -17,10 +17,11 @@ print("Este PDF possui", len(reader.pages), "páginas")
 first_page = reader.pages[0]
 
 # extrai o texto de uma página específica (PageObject)
-# print(first_page.extract_text())
+print(first_page.extract_text())
 
 
 # TextIOWrapper -> gerenciador de contextos que estabele uma conexão com um arquivo especificado
 # e inicializa um objeto capaz de representá-lo. Também é reponsável por finalizar a conexão com o arquivo.
 
 # TextIO -> representação do arquivo na forma de um objeto python
+
