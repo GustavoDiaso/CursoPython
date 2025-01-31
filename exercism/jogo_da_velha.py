@@ -1,8 +1,3 @@
-from logging import error
-
-from aulas.decoradores_interessantes.decorators.retry import retry
-
-
 class JogoDaVelha():
     def __init__(self):
         self.tabuleiro = [
