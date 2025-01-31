@@ -118,13 +118,13 @@ class JogoDaVelha():
             else:
                 return ''
 
-        linha_1 = [none_to_blank(e_) for e_ in tabuleiro[0]]
-        linha_2 = [none_to_blank(e_) for e_ in tabuleiro[1]]
-        linha_3 = [none_to_blank(e_) for e_ in tabuleiro[2]]
+        l1 = tabuleiro[0]
+        l2 = tabuleiro[1]
+        l3 = tabuleiro[2]
 
-        rpr1 = f"{linha_1[0]} | {linha_1[1]} | {linha_1[2]}"
-        rpr2 = f"{linha_2[0]} | {linha_2[1]} | {linha_2[2]}"
-        rpr3 = f"{linha_3[0]} | {linha_3[1]} | {linha_3[2]}"
+        rpr1 = f"{l1[0] if l1[0] is not None else ' ' } | {l1[1] if l1[1] is not None else ' '} | {l1[2] if l1[2] is not None else ' '}"
+        rpr2 = f"{l2[0] if l2[0] is not None else ' ' } | {l2[1] if l2[1] is not None else ' '} | {l2[2] if l2[2] is not None else ' '}"
+        rpr3 = f"{l3[0] if l3[0] is not None else ' ' } | {l3[1] if l3[1] is not None else ' '} | {l3[2] if l3[2] is not None else ' '}"
 
         rpr = f"""
         {rpr1}
