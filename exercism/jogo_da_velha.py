@@ -112,12 +112,6 @@ class JogoDaVelha():
     def __repr__(self):
         tabuleiro = self.tabuleiro
 
-        def none_to_blank(elem):
-            if elem is not None:
-                return elem
-            else:
-                return ''
-
         l1 = tabuleiro[0]
         l2 = tabuleiro[1]
         l3 = tabuleiro[2]
