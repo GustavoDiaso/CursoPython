@@ -28,7 +28,6 @@
 # modulo para fazer requisições
 import requests
 from bs4 import BeautifulSoup
-import os
 
 url = "http://localhost:3333/"
 
