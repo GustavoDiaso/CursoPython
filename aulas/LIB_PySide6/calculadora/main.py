@@ -12,16 +12,18 @@ class CalculatorMainWindow(QtWidgets.QWidget):
 
         self.lbl_expression = QtWidgets.QLabel("", parent=self)
         self.lbl_expression.setStyleSheet(css.lbl_expression)
-        self.lbl_expression.move(10, 20)
+        self.lbl_expression.move(20, 50)
 
         self.solution_screen = QtWidgets.QLabel("", parent=self)
         self.solution_screen.setStyleSheet(css.solution_screen)
-        self.solution_screen.move(0, 40)
+        self.solution_screen.move(10, 45)
         self.solution_screen.setAlignment(
             QtCore.Qt.AlignmentFlag.AlignVCenter | QtCore.Qt.AlignmentFlag.AlignRight
         )
         self.screen_layout = QtWidgets.QVBoxLayout()
         self.screen_layout.addChildWidget(self.solution_screen)
+
+        self.lbl_expression.raise_()
 
         self.number_layout_box = QtWidgets.QWidget(parent=self)
         self.number_layout_box.setStyleSheet(css.number_layout_box)
@@ -29,6 +31,10 @@ class CalculatorMainWindow(QtWidgets.QWidget):
         self.number_layout = CalculatorButtonsLayout(
             self, parent=self.number_layout_box
         )
+
+        self.calc_logo = QtWidgets.QLabel("S . V . P . A . M", parent=self)
+        self.calc_logo.setStyleSheet(css.calc_logo)
+        self.calc_logo.move(85, 15)
 
 
 # ----------------------------------------------------------
@@ -40,6 +46,7 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
         # setting the default configurations
         self.setSpacing(0),
         self.setContentsMargins(0, 0, 0, 0)
+        self.blocked = False
 
         # calculator_window referes to the calculator this Grid is related to
         self.calculator_window = calculator_window
@@ -49,15 +56,15 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
             "CE": self.clear_whole_operation,
             "C": self.clear_display,
             "⌫": self.remove_num_from_display,
-            "¹/x": None,
-            "x²": None,
-            "√x": None,
+            "¹/x": self.reciprocal_number,
+            "x²": self.number_at_square,
+            "√x": self.math_square_number,
             "÷": partial(self.insert_math_sign, "/"),
             "*": partial(self.insert_math_sign, "*"),
             "-": partial(self.insert_math_sign, "-"),
             "+": partial(self.insert_math_sign, "+"),
-            "±": None,
-            ".": None,
+            "±": self.invert_sign,
+            ".": self.insert_decimal,
             "=": self.get_solution,
         }
 
@@ -114,16 +121,26 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
 
     @QtCore.Slot()
     def add_num_to_display(self, number: str):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
         if len(self.calculator_window.solution_screen.text()) < 10:
             if self.calculator_window.solution_screen.text() == "":
                 self.calculator_window.solution_screen.setText(number)
             else:
                 self.calculator_window.solution_screen.setText(
-                    "".join([self.calculator_window.solution_screen.text(), number])
+                    self.calculator_window.solution_screen.text() + number
                 )
 
     @QtCore.Slot()
     def remove_num_from_display(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
         if self.calculator_window.solution_screen.text() != "":
             self.calculator_window.solution_screen.setText(
                 self.calculator_window.solution_screen.text()[:-1]
@@ -131,6 +148,11 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
 
     @QtCore.Slot()
     def clear_display(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
         self.calculator_window.solution_screen.setText("")
 
     @QtCore.Slot()
@@ -141,6 +163,12 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
     @QtCore.Slot()
     def insert_math_sign(self, sign: str):
         """iserts the clicked math sign to the math expression"""
+
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
         math_signs = ["/", "*", "-", "+"]
         math_signs_count = 0
         for sign_ in math_signs:
@@ -151,7 +179,7 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
         if self.calculator_window.solution_screen.text() != "":
             if math_signs_count == 0:
                 self.calculator_window.lbl_expression.setText(
-                    "".join([self.calculator_window.solution_screen.text(), sign])
+                    self.calculator_window.solution_screen.text() + sign
                 )
                 self.calculator_window.solution_screen.setText("")
             else:
@@ -161,13 +189,18 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
                 )
 
                 self.calculator_window.lbl_expression.setText(
-                    "".join([str(expression_solution), sign])
+                    str(expression_solution) + sign
                 )
 
                 self.calculator_window.solution_screen.setText("")
 
     @QtCore.Slot()
     def get_solution(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
         if self.calculator_window.solution_screen.text() != "":
             solution = eval(
                 self.calculator_window.lbl_expression.text()
@@ -177,8 +210,84 @@ class CalculatorButtonsLayout(QtWidgets.QGridLayout):
                 self.calculator_window.lbl_expression.text()
                 + self.calculator_window.solution_screen.text()
             )
-            self.calculator_window.solution_screen.setText(str(solution))
-            self.calculator_window.lbl_expression.setText("")
+            self.calculator_window.solution_screen.setText(str(round(solution, 3)))
+
+            # every time you click the '=' button, the keybord will be 'locked'
+            # This means that any key you press will clear the expression and
+            # the solution screen
+            self.blocked = True
+
+    @QtCore.Slot()
+    def invert_sign(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
+        if self.calculator_window.solution_screen.text() != "":
+            self.calculator_window.solution_screen.setText(
+                str(eval(self.calculator_window.solution_screen.text()) * -1),
+            )
+
+    @QtCore.Slot()
+    def insert_decimal(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
+        if self.calculator_window.solution_screen.text() != "":
+            if "." not in self.calculator_window.solution_screen.text():
+                self.calculator_window.solution_screen.setText(
+                    self.calculator_window.solution_screen.text() + "."
+                )
+
+    @QtCore.Slot()
+    def number_at_square(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
+        if self.calculator_window.solution_screen.text() != "":
+            self.calculator_window.solution_screen.setText(
+                str(round(eval(self.calculator_window.solution_screen.text()) ** 2, 3))
+            )
+
+    @QtCore.Slot()
+    def math_square_number(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
+        if self.calculator_window.solution_screen.text() != "":
+            if eval(self.calculator_window.solution_screen.text()) > 0:
+                self.calculator_window.solution_screen.setText(
+                    str(
+                        round(
+                            eval(self.calculator_window.solution_screen.text())
+                            ** (1 / 2),
+                            3,
+                        )
+                    )
+                )
+            else:
+                self.calculator_window.solution_screen.setText("Invalid Enter")
+                self.blocked = True
+
+    @QtCore.Slot()
+    def reciprocal_number(self):
+        # verify if the calculator keyboard is blocked
+        if self.blocked:
+            self.clear_whole_operation()
+            self.blocked = False
+
+        if self.calculator_window.solution_screen.text() != "":
+            reciprocal = round(
+                1 / eval(self.calculator_window.solution_screen.text()), 3
+            )
+            self.calculator_window.solution_screen.setText(str(reciprocal))
 
 
 if __name__ == "__main__":
