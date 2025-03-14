@@ -61,5 +61,25 @@ cursor.execute(
 )
 connection.commit()
 
+# Vamos reescrever o comando acima de forma a evitar SQL injections
+query = f"""
+    INSERT INTO {TABLE_NAME} (name, weight)
+    SELECT ?, ?
+    WHERE NOT EXISTS (
+        SELECT 1 FROM {TABLE_NAME}
+        WHERE name = ?
+        AND weight = ?
+    );
+    """
+
+# considere as informações abaixo como oriundas de um input válido feito pelo usuário
+name = "Isabela"
+weight = 70
+cursor.execute(query, [name, weight, name, weight])
+cursor.executemany(query, [("Paulo", 40, "Paulo", 40), ("Ronald", 80, "Ronald", 80)])
+
+connection.commit()
+
+
 cursor.close()
 connection.close()
