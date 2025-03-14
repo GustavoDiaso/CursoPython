@@ -1,115 +1,65 @@
-def military_time(time: str) -> str:
-    time = time.replace(":", " ")
-    splitted_time = time.split(" ")
+import sqlite3
+from pathlib import Path
 
-    hour, minute, period = splitted_time[0], splitted_time[1], splitted_time[2]
+ROOT_DIR = Path(__file__).parent
+DB_NAME = "bd.sqlite3"
+DB_FILE = ROOT_DIR / DB_NAME
+TABLE_NAME = "customers"
 
-    if period == "AM":
-        return f"{hour}:{minute}"
-
-    hint = {
-        "1": "13",
-        "2": "14",
-        "3": "15",
-        "4": "16",
-        "5": "17",
-        "6": "18",
-        "7": "19",
-        "8": "20",
-        "9": "21",
-        "10": "22",
-        "11": "23",
-        "12": "12",
-    }
-
-    return f"{hint[hour]}:{minute}"
+connection = sqlite3.connect(DB_FILE)
+"""
+Após estabelecida a conexão com nosso banco de dados, criaremos um objeto cursor.
+O cursor é um objeto que funciona como um intermediador entre o código python e o banco de dados, 
+possibilitando a execução de queries SQL.
+"""
+cursor = connection.cursor()
 
 
-def twenty_four_hour_time(time: str) -> str:
-    splitted_time = time.split(":")
+cursor.execute(
+    f"""
+    CREATE TABLE IF NOT EXISTS {TABLE_NAME}
+    (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        weight REAL
+    )
 
-    if len(splitted_time[1]) == 1:
-        splitted_time[1] = f"0{splitted_time[1]}"
+"""
+)
 
-    if int(splitted_time[0]) < 12:
-        if int(splitted_time[0]) == 0:
-            return f"12:{splitted_time[1]} AM"
-        return f"{splitted_time[0]}:{splitted_time[1]} AM"
+# limpa a tabela inteira
+cursor.execute(
+    f"""
+    DELETE FROM {TABLE_NAME}
+    """
+)
 
-    hint = {
-        "12": "12",
-        "13": "1",
-        "14": "2",
-        "15": "3",
-        "16": "4",
-        "17": "5",
-        "18": "6",
-        "19": "7",
-        "20": "8",
-        "21": "9",
-        "22": "10",
-        "23": "11",
-    }
+# Reindexa as linhas de forma crescente
+cursor.execute(
+    f"""
+    DELETE FROM sqlite_sequence WHERE name="{TABLE_NAME}"
+    """
+)
 
-    return f"{hint[splitted_time[0]]}:{splitted_time[1]} PM"
+"""
+O commit no sqlite tem o mesmo papel do commit no GIT:
+Ele identifica as alterações feitas no banco de dados pelo cursor e aplica todas elas à versão atual 
+do banco de dados.
+"""
+connection.commit()
 
+cursor.execute(
+    f"""
+    INSERT INTO {TABLE_NAME} (name, weight)
+    SELECT 'Gustavo Henrique', 70
+    WHERE NOT EXISTS (
+        SELECT 1 FROM {TABLE_NAME}
+        WHERE name = 'Gustavo Henrique'
+        AND weight = 70
+    );
+    """
+)
+connection.commit()
 
-def add_time(start: str, duration: str, weekday=""):
-    days_of_week = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-    ]
-
-    military_start = military_time(start)
-
-    extra_hours = 0
-    minutes = int(military_start.split(":")[1]) + int(duration.split(":")[1])
-    if minutes >= 60:
-        extra_hours = minutes // 60
-        minutes = minutes % 60
-
-    days = 0
-    hours = int(military_start.split(":")[0]) + int(duration.split(":")[0])
-    if hours >= 24:
-        days = hours // 24
-        hours = hours % 24
-
-    if extra_hours != 0:
-        hours += extra_hours
-        if hours >= 24:
-            days += hours // 24
-            hours = hours % 24
-
-    twenty_four_hour_start = twenty_four_hour_time(f"{hours}:{minutes}")
-
-    if weekday == "":
-        if days == 0:
-            return f"{twenty_four_hour_start}"
-        elif days == 1:
-            return f"{twenty_four_hour_start} (next day)"
-        else:
-            return f"{twenty_four_hour_start} ({days} days later)"
-
-    else:
-        weekday = weekday.strip().capitalize()
-
-        new_weekday_index = days_of_week.index(weekday) + (days % 7)
-        if new_weekday_index > 6:
-            new_weekday_index -= 7
-
-        new_day_of_week = days_of_week[new_weekday_index]
-
-        if days == 0:
-            return f"{twenty_four_hour_start}, {new_day_of_week}"
-        if days == 1:
-            return f"{twenty_four_hour_start}, {new_day_of_week} (next day)"
-        else:
-            return f"{twenty_four_hour_start}, {new_day_of_week} ({days} days later)"
-
-
-print(add_time("8:16 PM", "466:02", "tuesday"))
+cursor.close()
+connection.close()
