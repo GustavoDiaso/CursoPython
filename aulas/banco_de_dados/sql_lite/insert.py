@@ -76,7 +76,14 @@ query = f"""
 name = "Isabela"
 weight = 70
 cursor.execute(query, [name, weight, name, weight])
-cursor.executemany(query, [("Paulo", 40, "Paulo", 40), ("Ronald", 80, "Ronald", 80)])
+cursor.executemany(
+    query,
+    [
+        ("Paulo", 40, "Paulo", 40),
+        ("Ronald", 80, "Ronald", 80),
+        ("admin", 70, "admin", 70),
+    ],
+)
 
 connection.commit()
 
