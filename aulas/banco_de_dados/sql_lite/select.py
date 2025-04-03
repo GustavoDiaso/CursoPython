@@ -76,14 +76,16 @@ def table_representation(table, column_names: list[str]):
 user_name = "admin"
 user_weight = 70
 
-response = cursor.execute(
-    "SELECT COUNT(name) FROM customers WHERE name=? and weight=?",
-    (user_name, user_weight),
-)
+# response = cursor.execute(
+#     "SELECT COUNT(name) FROM customers WHERE name=? and weight=?",
+#     (user_name, user_weight),
+# )
+#
+# for row in response:
+#     print(row)
+#     if row[0] > 0:
+#         print('existe')
 
-for row in response:
-    # print(row)
-    ...
 
 
 response = cursor.execute("SELECT * FROM customers")
